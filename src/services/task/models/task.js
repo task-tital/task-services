@@ -1,5 +1,8 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('sqlite::memory:');
+const sequelize = new Sequelize('postgres://citizix_user:S3cret@localhost:5432/prueba');
+
+//const sequelize = require('../../../config/database');
+// console.log(sequelize);
 
 const Tasks = sequelize.define('Tasks', {
   id: {
