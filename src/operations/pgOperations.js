@@ -1,14 +1,13 @@
-const { Op } = require('sequelize');
+const { Op, Model } = require('sequelize');
 
 /**
  * Funcion que inserta entradas en la tabla.
- * @param {Sequelize} modelo el modelo de la tabla.
+ * @param {Model} modelo el modelo de la tabla.
  * @param {InputConstructor} datos son las entradas que se rellenaran. Crear a partir de InputConstructor.
  * @returns 
  */
 const insertPg = async(modelo, datos) => {
     try {
-        console.log(datos.getInput());
         return await modelo.create(datos.getInput());
     } catch(error) {
         throw new Error('Error INSERT: ' + error);
@@ -17,7 +16,7 @@ const insertPg = async(modelo, datos) => {
 
 /**
  * Funcion que selecciona todas las entradas de la tabla.
- * @param {Sequelize} modelo el modelo de la tabla.
+ * @param {Model} modelo el modelo de la tabla.
  * @returns 
  */
 const selectAllPg = async (modelo) => {
@@ -30,7 +29,7 @@ const selectAllPg = async (modelo) => {
 
 /**
  * Funcion que selecciona todas las entradas de la tabla que cumplan con la condicion.
- * @param {Sequelize} modelo el modelo de la tabla.
+ * @param {Model} modelo el modelo de la tabla.
  * @param {ConditionConstructor} condiciones es un objeto con pares clave-valor: nombreColumna-condicion. Crear a partir de la clase ConditionConstructor.
  * @returns
  */
@@ -46,7 +45,7 @@ const selectFilterPg = async (modelo, condiciones) => {
 
 /**
  * Funcion SELECT simple, obtiene unas columnas con unas condiciones.
- * @param {Sequelize} modelo el modelo de la tabla.
+ * @param {Model} modelo el modelo de la tabla.
  * @param {string[]} atributos lista con los nombres de las columnas que se recuperaran.
  * @param {ConditionConstructor} condiciones es un objeto con pares clave-valor: nombreColumna-condicion. Crear a partir de la clase ConditionConstructor.
  * @returns 
@@ -64,7 +63,7 @@ const selectPg = async (modelo, atributos, condiciones) => {
 
 /**
  * Funcion que actualiza el valor de una entrada de la tabla a partir del id.
- * @param {Sequelize} modelo el modelo de la tabla.
+ * @param {Model} modelo el modelo de la tabla.
  * @param {InputConstructor} datos datos que se actualizaran. Usar InputConstructor.
  * @param {string} id 
  * @returns 
@@ -79,7 +78,7 @@ const updatePg = async(modelo, datos, id) => {
 
 /**
  * Funcion que elimina una entrada de la tabla a partir de su id.
- * @param {Sequelize} modelo el modelo de la tabla.
+ * @param {Model} modelo el modelo de la tabla.
  * @param {string} id el id que indica la entrada de la tabla a la que se refiere.
  */
 const deletePg = async (modelo, id) => {
@@ -88,6 +87,7 @@ const deletePg = async (modelo, id) => {
         if(resultado === 0) {
             throw new Error('No existe el id: '+ id);
         }
+        return resultado;
     } catch(error) {
         throw new Error('Error DELETE: ' + error);
     }
@@ -144,5 +144,8 @@ class ConditionConstructor {
         this.condicionObject = {};
     }
 }
+
+// Son las operaciones Op que se han definido: 
+const operacionesOpValidas = ["LIKE", "EQUALS", "GREATER", "LOWER", ""];
 
 module.exports = { insertPg, selectAllPg, selectFilterPg, selectPg, updatePg, deletePg, InputConstructor, ConditionConstructor };

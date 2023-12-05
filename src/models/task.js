@@ -2,7 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = require('../config/database');
 
-const Tasks = sequelize.define('Tasks', {
+const TasksModel = {
   id: {
     type: DataTypes.UUID,   
     primaryKey: true,
@@ -10,10 +10,12 @@ const Tasks = sequelize.define('Tasks', {
     unique: true
   },
   title: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    allowNull: false
   },
   description: {
-    type: DataTypes.TEXT
+    type: DataTypes.TEXT,
+    allowNull: true
   },
   dateEnd: {
     type: DataTypes.DATE,
@@ -23,9 +25,12 @@ const Tasks = sequelize.define('Tasks', {
     type: DataTypes.INTEGER,
     allowNull: false
   }
-}, {
+};
+
+const Tasks = sequelize.define('Tasks', TasksModel,
+{
     sequelize,
     modelName: 'Tasks'
 });
 
-module.exports = Tasks;
+module.exports = { Tasks, TasksModel };
