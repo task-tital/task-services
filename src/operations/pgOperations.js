@@ -1,5 +1,4 @@
 const { Op } = require('sequelize');
-const { Tasks } = require('../models/task');
 
 /**
  * Funcion que inserta entradas en la tabla.
@@ -10,7 +9,7 @@ const { Tasks } = require('../models/task');
 const insertPg = async(modelo, datos) => {
     try {
         console.log(datos.getInput());
-        return await Tasks.create(datos.getInput());
+        return await modelo.create(datos.getInput());
     } catch(error) {
         throw new Error('Error INSERT: ' + error);
     }
@@ -67,7 +66,7 @@ const selectPg = async (modelo, atributos, condiciones) => {
  * Funcion que actualiza el valor de una entrada de la tabla a partir del id.
  * @param {Sequelize} modelo el modelo de la tabla.
  * @param {InputConstructor} datos datos que se actualizaran. Usar InputConstructor.
- * @param {*} id 
+ * @param {string} id 
  * @returns 
  */
 const updatePg = async(modelo, datos, id) => {
