@@ -1,0 +1,3 @@
+class PgMap {
+    id
+}
