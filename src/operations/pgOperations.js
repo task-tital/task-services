@@ -98,6 +98,12 @@ class InputConstructor {
         this.inputObject = {};
     }
 
+    setAttributesFromObject(objeto) {
+        for(let elemento in objeto) {
+            this.inputObject[elemento] = objeto[elemento];
+        }
+    }
+
     setAttribute(columna, valor) {
         this.inputObject[columna] = valor;
     }
@@ -114,6 +120,13 @@ class InputConstructor {
         this.inputObject = {};
     }
 }
+
+// Son las operaciones Op que se han definido: 
+const OPERACION_LIKE = "LIKE";
+const OPERACION_EQUALS = "EQUALS";
+const OPERACION_GREATER = "GREATER";
+const OPERACION_LOWER = "LOWER";
+const OPERACIONES_OP_VALIDAS = [OPERACION_LIKE, OPERACION_EQUALS, OPERACION_GREATER, OPERACION_LOWER, ""];
 
 class ConditionConstructor {
     constructor() {
@@ -140,12 +153,27 @@ class ConditionConstructor {
         this.condicionObject[columna] = {[Op.lt]: valor};
     }
 
+    setCondicionesFromObject(objeto) {
+        for(let clave in objeto) {
+            let valor = objeto[clave];
+            let tipoOperacion = valor['tipoOperacion'];
+            let valorOperacion = valor['valor'];
+
+            if(tipoOperacion == OPERACION_LIKE) {
+                this.setLike(clave, valorOperacion);
+            } else if(tipoOperacion == OPERACION_GREATER) {
+                this.setGreaterThan(clave, valorOperacion);
+            } else if(tipoOperacion == OPERACION_LOWER) {
+                this.setLowerThan(clave, valorOperacion);
+            } else {
+                this.setEquals(clave, valorOperacion);
+            }
+        }
+    }
+
     clean() {
         this.condicionObject = {};
     }
 }
 
-// Son las operaciones Op que se han definido: 
-const operacionesOpValidas = ["LIKE", "EQUALS", "GREATER", "LOWER", ""];
-
-module.exports = { insertPg, selectAllPg, selectFilterPg, selectPg, updatePg, deletePg, InputConstructor, ConditionConstructor };
+module.exports = { insertPg, selectAllPg, selectFilterPg, selectPg, updatePg, deletePg, InputConstructor, ConditionConstructor, OPERACIONES_OP_VALIDAS };
