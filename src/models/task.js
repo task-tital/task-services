@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 const sequelize = require('../config/database');
 
-const TasksModel = {
+const Tasks = {
   id: {
     type: DataTypes.UUID,   
     primaryKey: true,
@@ -27,10 +27,10 @@ const TasksModel = {
   }
 };
 
-const Tasks = sequelize.define('Tasks', TasksModel,
+const TasksModel = sequelize.define('Tasks', Tasks,
 {
     sequelize,
     modelName: 'Tasks'
 });
 
-module.exports = { Tasks, TasksModel };
+module.exports = { TasksModel };
